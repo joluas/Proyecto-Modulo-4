@@ -1,0 +1,210 @@
+#Importando librerias
+from flask import Flask, jsonify, request
+from pymongo import MongoClient
+from datetime import datetime
+from decimal import Decimal, InvalidOperation
+import requests
+
+#Inicializando librerias y variables generales
+app=Flask(__name__)
+client=MongoClient('mongodb+srv://joluas:Aburrido3000.@cluster0.n4zapwu.mongodb.net/')
+db=client['API_Mod4']
+coll=db['Sismos']
+URL_DOCUMENTACION='Aqui va a ir un URL'
+fun_URL='https://twitter.com/m_ebrard/status/326143274010169344?lang=es'
+estados_dic={
+    'Aguascalientes': 'AGS',
+    'Baja California': 'BC',
+    'Baja California Sur': 'BCS',
+    'Campeche': 'CAMP',
+    'Chiapas': 'CHIS',
+    'Chihuahua': 'CHIH',
+    'Coahuila': 'COAH',
+    'Colima': 'COL',
+    'Ciudad de Mexico': 'CDMX',
+    'Durango': 'DGO',
+    'Estado de Mexico': 'MEX',
+    'Guanajuato': 'GTO',
+    'Guerrero': 'GRO',
+    'Hidalgo': 'HGO',
+    'Jalisco': 'JAL',
+    'Michoacan': 'MICH',
+    'Morelos': 'MOR',
+    'Nayarit': 'NAY',
+    'Nuevo Leon': 'NL',
+    'Oaxaca': 'OAX',
+    'Puebla': 'PUE',
+    'Queretaro': 'QRO',
+    'Quintana Roo': 'QR',
+    'San Luis Potosi': 'SLP',
+    'Sinaloa': 'SIN',
+    'Sonora': 'SON',
+    'Tabasco': 'TAB',
+    'Tamaulipas': 'TAMS',
+    'Tlaxcala': 'TLAX',
+    'Veracruz': 'VER',
+    'Yucatan': 'YUC',
+    'Zacatecas': 'ZAC'
+}
+
+#Definiendo funciones a reutilizar
+def date_validator(date):
+    date_format='%Y-%m-%d'
+    try:
+        clean_date=datetime.strptime(date,date_format)
+        return clean_date
+    except ValueError:
+        clean_date=0
+        return clean_date
+
+def state_validator(state):
+    valid_state=state in estados_dic.values()
+    return valid_state
+
+def magnitude_validator(magnitude):
+    try:
+        valid_magnitude=0<=float(magnitude)<=10
+        return valid_magnitude
+    except ValueError:
+        return False
+
+def not_valid_date():
+    response=jsonify({'1.- ERROR': 'Fecha debe estar en formato YYYY-MM-DD'})
+    response.status_code=400
+    return response
+
+def not_valid_state():
+    response=jsonify({'1.- ERROR': 'El valor ingresado en estado no es un valor valido'})
+    response.status_code=400
+    return response
+
+def not_valid_magnitude():
+    response=jsonify({'1.- ERROR': 'La escala Richter solo tiene valores entre 0 y 10.'})
+    response.status_code=400
+    return response
+
+def valid_response():
+    response=response=jsonify({})
+    response.status_code=200
+    return response
+
+#Base Endpoint
+@app.route('/',methods=['GET'])
+def root():
+    response=jsonify({'1.- message': 'Conectado al EndPoint de manera correcta'})
+    response.status_code=200
+    return response
+
+@app.route('/sismos',methods=['GET'])
+def sismos_general():
+    cuenta=coll.estimated_document_count()
+    response=jsonify({'1.- message': f'La API de sismos te permite consultar información sobre los {cuenta} sismos registados en la base de datos. Consulta la documentación para conocer las funciones de esta API.', '2.- data': URL_DOCUMENTACION})
+    response.status_code=200
+    return response
+
+@app.route('/sismos/estados',methods=['GET'])
+def sismos_estados():
+    response=jsonify({'1.- message':'Diccionario de todos los posibles estados que puedes usar para tu busqueda. Usa el valor frente al nombre del estado en el parametro \'state\' de tu llamada', '2.- data':estados_dic})
+    response.status_code=200
+    return response
+
+@app.route('/sismos/fun',methods=['GET'])
+def sismos_fun():
+    response=jsonify({'1.- message': 'Have some fun', '2.- data': fun_URL})
+    response.status_code=200
+    return response
+
+@app.route('/sismos/busqueda',methods=['GET'])
+def sismos_busqueda():
+    lista=[]
+    projection={'_id':0}
+    date=request.args.get('date')
+    state=request.args.get('state',type=str)
+    magnitude=request.args.get('magnitude',type=float)
+    #Buscar solo por magnitud
+    if magnitude:
+        valid_magnitude=magnitude_validator(magnitude)
+        if valid_magnitude == True:
+            criteria=[{'Magnitud':{'$gte':magnitude}}]
+            response=valid_response()
+        if valid_magnitude == False:
+            response=not_valid_magnitude()
+    #Buscar solo por fecha
+    if date:
+        clean_date=date_validator(date)
+        if clean_date!=0:
+            criteria=[{'Fecha':{'$gt':clean_date}}]
+            response=valid_response()
+        if clean_date==0:
+            response=not_valid_date()
+    #Buscar solo por estado
+    if state:
+        valid_state=state_validator(state)
+        if valid_state == True:
+            state_full=', '+state+'$'
+            criteria=[{'Referencia de localizacion':{'$regex':state_full}}]
+            response=valid_response()
+        if valid_state == False:
+            response=not_valid_state()
+    #Buscar por fecha y magnitud
+    if (date and magnitude):
+        clean_date=date_validator(date)
+        valid_magnitude=magnitude_validator(magnitude)
+        if clean_date!=0 and valid_magnitude == True:
+            criteria=[{'Magnitud':{'$gte':magnitude},'Fecha':{'$gt':clean_date}}]
+            response=valid_response()
+        if clean_date==0:
+            response=not_valid_date()
+        if valid_magnitude == False:
+            response=not_valid_magnitude()
+    #Buscar por magnitud y estado
+    if (magnitude and state):
+        valid_state=state_validator(state)
+        valid_magnitude=magnitude_validator(magnitude)
+        if valid_state == True and valid_magnitude == True:
+            state_full=', '+state+'$'
+            criteria=[{'Magnitud':{'$gte':magnitude},'Referencia de localizacion':{'$regex':state_full}}]
+            response=valid_response()
+        if valid_state == False:
+            response=not_valid_state()
+        if valid_magnitude == False:
+            response=not_valid_magnitude()
+    #Buscar por fecha y estado
+    if (date and state):
+        clean_date=date_validator(date)
+        valid_state=state_validator(state)
+        if clean_date!=0 and valid_state == True:
+            state_full=', '+state+'$'
+            criteria=[{'Fecha':{'$gt':clean_date},'Referencia de localizacion':{'$regex':state_full}}]
+            response=valid_response()
+        if clean_date==0:
+            response=not_valid_date()
+        if valid_state == False:
+            response=not_valid_state()
+    #Buscar por todo
+    if (date and magnitude and state):
+        clean_date=date_validator(date)
+        valid_state=state_validator(state)
+        valid_magnitude=magnitude_validator(magnitude)
+        if clean_date!=0 and valid_state == True and valid_magnitude == True:
+            state_full=', '+state+'$'
+            criteria=[{'Magnitud':{'$gte':magnitude},'Fecha':{'$gt':clean_date},'Referencia de localizacion':{'$regex':state_full}}]
+            response=valid_response()
+        if clean_date==0:
+            response=not_valid_date()
+        if valid_state == False:
+            response=not_valid_state()
+        if valid_magnitude == False:
+            response=not_valid_magnitude()
+    #Replica peticiones validas
+    if response.status_code!=400:
+        query={'$and':criteria}
+        results=coll.find(query,projection)
+        for result in results:
+            lista.append(result)
+        longitud=len(lista)
+        response=jsonify({'1.- total results': longitud, '2.- data': lista})
+        response.status_code=200
+    return response
+
+app.run(debug=True, host='localhost', port=5000)
