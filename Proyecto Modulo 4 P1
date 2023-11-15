@@ -1,0 +1,43 @@
+#Los datos fueron obtenidos en http://www2.ssn.unam.mx:8080/catalogo/
+#Se descargaron los datos de los sismos del 1ro de Enero de 1900 a la fecha
+#Se hizo una pequeña limpieza de los datos de forma manual
+#Al descargar el documento este tenia un Header y un Footer, los cuales fueron removidos manualmente
+
+#Importando librerias
+import pandas as pd
+from pymongo import MongoClient
+
+#Lectura de datos
+raw_data=pd.read_csv('C:\\Users\Jose Luis\Downloads\SSNMX_catalogo_19000101_20231111.csv', low_memory=False)
+
+#Verificacion de que este funcionando
+print(raw_data.head())
+
+#Agregando URL para Google Maps
+URLs=[]
+for i in range(len(raw_data)):
+    temp='https://www.google.com/maps/search/?api=1&query='+str(raw_data.iloc[i,3])+','+str(raw_data.iloc[i,4])
+    URLs.append(temp)
+raw_data['URL']=URLs
+
+#Preparando datos para ser exportados a MongoDB
+#Eliminando filas sin valor 'Magnitud'
+clean=raw_data[pd.to_numeric(raw_data['Magnitud'], errors='coerce').notnull()]
+#Convirtiendo columna 'Fecha' y 'Hora' (texto) a columna 'Fecha + Hora' (Fecha ISO)
+clean['Fecha']=pd.to_datetime(clean['Fecha']+' '+clean['Hora'])
+#Convirtiendo columna 'Fecha UTC' y 'Hora UTC' (texto) a columna 'Fecha UTC + Hora UTC' (Fecha ISO)
+clean['Fecha UTC']=pd.to_datetime(clean['Fecha UTC']+' '+clean['Hora UTC'])
+#Eliminando columnas 'Hora' y 'Hora UTC'
+clean.drop(labels=['Hora','Hora UTC'],axis=1,inplace=True)
+#Cambiando el tipo de dato de 'Magnitud' de texto a float
+clean=clean.astype({'Magnitud': float})
+#Convirtiendo a diccionario para exportar a Mongo
+for_mongo=clean.to_dict('records')
+
+#Conexion a Mongo
+client=MongoClient('mongodb+srv://joluas:Aburrido3000.@cluster0.n4zapwu.mongodb.net/')
+db=client['API_Mod4']
+coll=db['Sismos']
+
+#Insercion a Mongo
+coll.insert_many(for_mongo)
