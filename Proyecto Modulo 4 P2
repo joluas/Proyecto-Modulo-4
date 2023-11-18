@@ -2,8 +2,6 @@
 from flask import Flask, jsonify, request
 from pymongo import MongoClient
 from datetime import datetime
-from decimal import Decimal, InvalidOperation
-import requests
 
 #Inicializando librerias y variables generales
 app=Flask(__name__)
@@ -206,5 +204,3 @@ def sismos_busqueda():
         response=jsonify({'1.- total results': longitud, '2.- data': lista})
         response.status_code=200
     return response
-
-app.run(debug=True, host='localhost', port=5000)
