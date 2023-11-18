@@ -91,26 +91,26 @@ def valid_response():
 #Base Endpoint
 @app.route('/',methods=['GET'])
 def root():
-    response=jsonify({'1.- message': 'Conectado al EndPoint de manera correcta'})
+    response=jsonify({'1.- message': 'Conectado al EndPoint de manera correcta. Consulta la documentación para conocer las funciones de esta API.', '2.- data': URL_DOCUMENTACION})
     response.status_code=200
     return response
 
 @app.route('/sismos',methods=['GET'])
 def sismos_general():
     cuenta=coll.estimated_document_count()
-    response=jsonify({'1.- message': f'La API de sismos te permite consultar información sobre los {cuenta} sismos registados en la base de datos. Consulta la documentación para conocer las funciones de esta API.', '2.- data': URL_DOCUMENTACION})
+    response=jsonify({'1.- message': f'La API de sismos te permite consultar información sobre los {cuenta} sismos registados en la base de datos. Los sismos tienen la fecha y hora de cada sismo, latitud, longitud, magnitud, profundidad, la ubicacion aproximada y un link que te lleva a la ubicacion en Google Maps.'})
     response.status_code=200
     return response
 
 @app.route('/sismos/estados',methods=['GET'])
 def sismos_estados():
-    response=jsonify({'1.- message':'Diccionario de todos los posibles estados que puedes usar para tu busqueda. Usa el valor frente al nombre del estado en el parametro \'state\' de tu llamada', '2.- data':estados_dic})
+    response=jsonify({'1.- message':'Diccionario de todos los posibles estados que puedes usar para tu busqueda. Usa el valor frente al nombre del estado en el parametro \'state\' de tu llamada.', '2.- data':estados_dic})
     response.status_code=200
     return response
 
 @app.route('/sismos/fun',methods=['GET'])
 def sismos_fun():
-    response=jsonify({'1.- message': 'Have some fun', '2.- data': fun_URL})
+    response=jsonify({'1.- message': 'Que dice Marcelo?', '2.- data': fun_URL})
     response.status_code=200
     return response
 
