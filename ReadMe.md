@@ -1,10 +1,10 @@
 # Proyecto-Modulo-4
 
-Con esta API puedes consultar toda la informacion proporcianada por el [Servicio Sismologico Nacional de la UNAM](http://www2.ssn.unam.mx:8080/catalogo/).
+Con esta API puedes consultar toda la información proporcionada por el [Servicio Sismologico Nacional de la UNAM](http://www2.ssn.unam.mx:8080/catalogo/).
 
 Los datos fueron descargados, limpiados y subidos a MongoDB desde donde la API puede hacer consultas.
 
-A continuacion, puedes consultar todos los posibles EndPoints y parametros que pueden ser usados en esta API:
+A continuación, puedes consultar todos los posibles EndPoints y parámetros que pueden ser usados en esta API:
 
 ### Main URL
 - Request URL: `https://joluas.pythonanywhere.com/`
@@ -19,19 +19,19 @@ A continuacion, puedes consultar todos los posibles EndPoints y parametros que p
 ### Estados URL
 - Request URL: `https://joluas.pythonanywhere.com/sismos/estados`
 - Request method: GET
-- Request functionality: Este EndPoint te permite conocer los valores que puedes usar en la API de busqueda para buscar sismos por estado.
+- Request functionality: Este EndPoint te permite conocer los valores que puedes usar en la API de búsqueda para buscar sismos por estado.
 
 ### Busqueda URL
 - Request URL: `https://joluas.pythonanywhere.com/sismos/busqueda`
 - Request method: GET
-- Request functionality: Este EndPoint es el que te permite hacer una busqueda de sismos de acuerdo a los parametros ingresados. (puedes buscar usando un solo parametro o los 3 a la vez)
+- Request functionality: Este EndPoint es el que te permite hacer una búsqueda de sismos de acuerdo a los parámetros ingresados. (puedes buscar usando un solo parámetro o los 3 a la vez)
 
 #### Parametros
 |Key|Value|Mandatory|Details|
-|-------------|-------------|---|:-----:|
-|state|string|No|Para usar correctamente el filtro de estado debes consultar el EndPoint Estados URL. Debes usar los valores proporcionado en dicha API para poder hacer busqueda de sismos por estado.|
+|-------------|-------------|---|:-----|
+|state|string|No|Para usar correctamente el filtro de estado debes consultar el EndPoint Estados URL. Debes usar los valores proporcionados en dicha API para poder hacer búsqueda de sismos por estado.|
 |date|date (YYYY-MM-DD)|No|Otorga los sismos cuya fecha sea igual o superior a la fecha proporcionada. Los sismos dentro de la base de datos abarcan desde el 1990-01-01 hasta 2023-11-11|
-|magnitude|float|No|Otoga los sismos cuya magnitud sea igual o superior a la magnitud proporcionada. La escala de Richter va desde 0 hasta 10. El sismo de mayor magnitud registrado en la base de datos es de 8.2. El sismo de menor magnitud registrado es de 0.3|
+|magnitude|float|No|Otorga los sismos cuya magnitud sea igual o superior a la magnitud proporcionada. La escala de Richter va desde 0 hasta 10. El sismo de mayor magnitud registrado en la base de datos es de 8.2. El sismo de menor magnitud registrado es de 0.3|
 
 #### Request example
 |Key|Value|
@@ -67,4 +67,4 @@ A continuacion, puedes consultar todos los posibles EndPoints y parametros que p
 
 ## Known errors
 - No me dio tiempo de implementar pagination. Hay 273 mil sismos en la base de datos. Si llamas desde Postman y quieres buscar todos los sismos Postman da un error por el tamaño del archivo regresado por la API
-- `magnitude` solo acepta valores float. Puede validar si es un valor que no esta entre 0 y 10 pero cualquier valor string regresa un error que no pude corregir
+- `magnitude` solo acepta valores float. Puede validar si es un valor que no está entre 0 y 10 pero cualquier valor string regresa un error que no pude corregir
