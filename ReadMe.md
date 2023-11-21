@@ -1,6 +1,6 @@
 # Proyecto-Modulo-4
 
-Con esta API puedes consultar toda la información proporcionada por el [Servicio Sismologico Nacional de la UNAM](http://www2.ssn.unam.mx:8080/catalogo/).
+Con esta API puedes consultar toda la información proporcionada por el [Servicio Sismológico Nacional de la UNAM](http://www2.ssn.unam.mx:8080/catalogo/).
 
 Los datos fueron descargados, limpiados y subidos a MongoDB desde donde la API puede hacer consultas.
 
