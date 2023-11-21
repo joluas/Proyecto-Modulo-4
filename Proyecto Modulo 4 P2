@@ -5,7 +5,7 @@ from datetime import datetime
 
 #Inicializando librerias y variables generales
 app=Flask(__name__)
-client=MongoClient('mongodb+srv://joluas:Aburrido3000.@cluster0.n4zapwu.mongodb.net/')
+client=MongoClient('mongodb+srv://joluas:<PASSWORD>.@cluster0.n4zapwu.mongodb.net/')
 db=client['API_Mod4']
 coll=db['Sismos']
 URL_DOCUMENTACION='https://github.com/joluas/Proyecto-Modulo-4/tree/main#proyecto-modulo-4'
