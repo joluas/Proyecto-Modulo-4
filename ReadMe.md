@@ -28,9 +28,9 @@ A continuacion, puedes consultar todos los posibles EndPoints y parametros que p
 
 #### Parametros
 |Key|Value|Mandatory|Details|
-|-------------|-------------|---|-----|
+|-------------|-------------|---|:-----:|
 |state|string|No|Para usar correctamente el filtro de estado debes consultar el EndPoint Estados URL. Debes usar los valores proporcionado en dicha API para poder hacer busqueda de sismos por estado.|
-|date|date (YYYY-MM-DD)|No|Otorga los sismos qcuya fecha sea igual o superior a la fecha proporcionada. Los sismos dentro de la base de datos abarcan desde el 1990-01-01 hasta 2023-11-11|
+|date|date (YYYY-MM-DD)|No|Otorga los sismos cuya fecha sea igual o superior a la fecha proporcionada. Los sismos dentro de la base de datos abarcan desde el 1990-01-01 hasta 2023-11-11|
 |magnitude|float|No|Otoga los sismos cuya magnitud sea igual o superior a la magnitud proporcionada. La escala de Richter va desde 0 hasta 10. El sismo de mayor magnitud registrado en la base de datos es de 8.2. El sismo de menor magnitud registrado es de 0.3|
 
 #### Request example
