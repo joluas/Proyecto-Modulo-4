@@ -7,22 +7,22 @@ Los datos fueron descargados, limpiados y subidos a MongoDB desde donde la API p
 A continuacion, puedes consultar todos los posibles EndPoints y parametros que pueden ser usados en esta API:
 
 ### Main URL
-- Request URL: `(Aqui va ir un URL)`
+- Request URL: `https://joluas.pythonanywhere.com/`
 - Request method: GET
 - Request functionality: Este EndPoint te permite saber si puedes alcanzar la API de manera correcta.
 
 ### Sismos URL
-- Request URL: `(Aqui va ir un URL)/sismos`
+- Request URL: `https://joluas.pythonanywhere.com/sismos`
 - Request method: GET
 - Request functionality: Este EndPoint te permite conocer los detalles que contiene cada sismo en la base de datos.
 
 ### Estados URL
-- Request URL: `(Aqui va ir un URL)/sismos/estados`
+- Request URL: `https://joluas.pythonanywhere.com/sismos/estados`
 - Request method: GET
 - Request functionality: Este EndPoint te permite conocer los valores que puedes usar en la API de busqueda para buscar sismos por estado.
 
 ### Busqueda URL
-- Request URL: `(Aqui va ir un URL)/sismos/busqueda`
+- Request URL: `https://joluas.pythonanywhere.com/sismos/busqueda`
 - Request method: GET
 - Request functionality: Este EndPoint es el que te permite hacer una busqueda de sismos de acuerdo a los parametros ingresados.
 
@@ -54,6 +54,6 @@ A continuacion, puedes consultar todos los posibles EndPoints y parametros que p
 ```
 
 ### Fun URL
-- Request URL: `(Aqui va ir un URL)/sismos/fun`
+- Request URL: `https://joluas.pythonanywhere.com/sismos/fun`
 - Request method: GET
 - Request functionality: Just a little easter egg :).
