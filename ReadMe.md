@@ -66,5 +66,6 @@ A continuación, puedes consultar todos los posibles EndPoints y parámetros que
 - Request functionality: Just a little easter egg :).
 
 ## Known errors
-- No me dio tiempo de implementar pagination. Hay 273 mil sismos en la base de datos. Si llamas desde Postman y quieres buscar todos los sismos Postman da un error por el tamaño del archivo regresado por la API
+- No me dio tiempo de implementar pagination. Hay 273 mil sismos en la base de datos. Si llamas desde Postman y los resultados proporcionados son muchos, obtienes un error como el siguiente:
+![Error Postman](https://github.com/joluas/Proyecto-Modulo-4/blob/main/Maximum%20response%20size%20reached.png?raw=true)
 - `magnitude` solo acepta valores float. Puede validar si es un valor que no está entre 0 y 10 pero cualquier valor string regresa un error que no pude corregir
