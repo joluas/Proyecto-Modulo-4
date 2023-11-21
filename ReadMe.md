@@ -64,3 +64,7 @@ A continuacion, puedes consultar todos los posibles EndPoints y parametros que p
 - Request URL: `https://joluas.pythonanywhere.com/sismos/fun`
 - Request method: GET
 - Request functionality: Just a little easter egg :).
+
+## Known errors
+- No me dio tiempo de implementar pagination. Hay 273 mil sismos en la base de datos. Si llamas desde Postman y quieres buscar todos los sismos Postman da un error por el tamaño del archivo regresado por la API
+- `magnitude` solo acepta valores float. Puede validar si es un valor que no esta entre 0 y 10 pero cualquier valor string regresa un error que no pude corregir
