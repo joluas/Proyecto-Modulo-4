@@ -19,20 +19,20 @@ estados_dic={
     'Chihuahua': 'CHIH',
     'Coahuila': 'COAH',
     'Colima': 'COL',
-    'Ciudad de Mexico': 'CDMX',
+    'Ciudad de México': 'CDMX',
     'Durango': 'DGO',
-    'Estado de Mexico': 'MEX',
+    'Estado de México': 'MEX',
     'Guanajuato': 'GTO',
     'Guerrero': 'GRO',
     'Hidalgo': 'HGO',
     'Jalisco': 'JAL',
-    'Michoacan': 'MICH',
+    'Michoacán': 'MICH',
     'Morelos': 'MOR',
     'Nayarit': 'NAY',
-    'Nuevo Leon': 'NL',
+    'Nuevo León': 'NL',
     'Oaxaca': 'OAX',
     'Puebla': 'PUE',
-    'Queretaro': 'QRO',
+    'Querétaro': 'QRO',
     'Quintana Roo': 'QR',
     'San Luis Potosi': 'SLP',
     'Sinaloa': 'SIN',
@@ -41,7 +41,7 @@ estados_dic={
     'Tamaulipas': 'TAMS',
     'Tlaxcala': 'TLAX',
     'Veracruz': 'VER',
-    'Yucatan': 'YUC',
+    'Yucatán': 'YUC',
     'Zacatecas': 'ZAC'
 }
 
@@ -67,12 +67,12 @@ def magnitude_validator(magnitude):
         return False
 
 def not_valid_date():
-    response=jsonify({'1.- ERROR': 'Fecha debe estar en formato YYYY-MM-DD'})
+    response=jsonify({'1.- ERROR': 'Fecha debe estar en formato YYYY-MM-DD.'})
     response.status_code=400
     return response
 
 def not_valid_state():
-    response=jsonify({'1.- ERROR': 'El valor ingresado en estado no es un valor valido'})
+    response=jsonify({'1.- ERROR': 'El valor ingresado en estado no es un valor válido. Consulta el siguiente EndPoint.', '2.- data': 'https://joluas.pythonanywhere.com/sismos/estados'})
     response.status_code=400
     return response
 
@@ -96,19 +96,19 @@ def root():
 @app.route('/sismos',methods=['GET'])
 def sismos_general():
     cuenta=coll.estimated_document_count()
-    response=jsonify({'1.- message': f'La API de sismos te permite consultar información sobre los {cuenta} sismos registados en la base de datos. Los sismos tienen la fecha y hora de cada sismo, latitud, longitud, magnitud, profundidad, la ubicacion aproximada y un link que te lleva a la ubicacion en Google Maps.'})
+    response=jsonify({'1.- message': f'La API de sismos te permite consultar información sobre los {cuenta} sismos registrados en la base de datos. Los sismos tienen la fecha y hora de cada sismo, latitud, longitud, magnitud, profundidad, la ubicación aproximada y un link que te lleva a la ubicación en Google Maps.'})
     response.status_code=200
     return response
 
 @app.route('/sismos/estados',methods=['GET'])
 def sismos_estados():
-    response=jsonify({'1.- message':'Diccionario de todos los posibles estados que puedes usar para tu busqueda. Usa el valor frente al nombre del estado en el parametro \'state\' de tu llamada.', '2.- data':estados_dic})
+    response=jsonify({'1.- message':'Diccionario de todos los posibles estados que puedes usar para tu busqueda. Usa el valor frente al nombre del estado en el parámetro \'state\' de tu llamada.', '2.- data':estados_dic})
     response.status_code=200
     return response
 
 @app.route('/sismos/fun',methods=['GET'])
 def sismos_fun():
-    response=jsonify({'1.- message': 'Que dice Marcelo?', '2.- data': fun_URL})
+    response=jsonify({'1.- message': 'Qué dice Marcelo?', '2.- data': fun_URL})
     response.status_code=200
     return response
 
