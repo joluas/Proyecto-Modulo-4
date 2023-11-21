@@ -24,14 +24,14 @@ A continuacion, puedes consultar todos los posibles EndPoints y parametros que p
 ### Busqueda URL
 - Request URL: `https://joluas.pythonanywhere.com/sismos/busqueda`
 - Request method: GET
-- Request functionality: Este EndPoint es el que te permite hacer una busqueda de sismos de acuerdo a los parametros ingresados.
+- Request functionality: Este EndPoint es el que te permite hacer una busqueda de sismos de acuerdo a los parametros ingresados. (puedes buscar usando un solo parametro o los 3 a la vez)
 
 #### Parametros
-|Key|Value|Details|
-|-------------|-------------|-----|
-|state|string| Para usar correctamente el filtro de estado debes consultar el EndPoint Estados URL. Debes usar los valores proporcionado en dicha API para poder hacer busqueda de sismos por estado.|
-|date|date (YYYY-MM-DD)| Los sismos dentro de la base de datos abarcan desde el 1990-01-01 hasta 2023-11-11|
-|magnitude|float| La escala de Richter va desde 0 hasta 10. El sismo de mayor magnitud registrado en la base de datos es de 8.2. El sismo de menor magnitud registrado es de 0.3|
+|Key|Value|Mandatory|Details|
+|-------------|-------------|---|-----|
+|state|string|No|Para usar correctamente el filtro de estado debes consultar el EndPoint Estados URL. Debes usar los valores proporcionado en dicha API para poder hacer busqueda de sismos por estado.|
+|date|date (YYYY-MM-DD)|No|Los sismos dentro de la base de datos abarcan desde el 1990-01-01 hasta 2023-11-11|
+|magnitude|float|No|La escala de Richter va desde 0 hasta 10. El sismo de mayor magnitud registrado en la base de datos es de 8.2. El sismo de menor magnitud registrado es de 0.3|
 
 #### Response example
 ```
