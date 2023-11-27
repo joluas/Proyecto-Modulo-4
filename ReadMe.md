@@ -37,7 +37,7 @@ A continuación, puedes consultar todos los posibles EndPoints y parámetros que
 |Key|Value|
 |-|-|
 |state|JAL|
-|date|1990-01-01|
+|date|1900-01-01|
 |magnitude|8|
 
 #### Response example
