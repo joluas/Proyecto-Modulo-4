@@ -6,9 +6,26 @@
 #Importando librerias
 import pandas as pd
 from pymongo import MongoClient
+from datetime import datetime
+
+#Conexion a Mongo
+client=MongoClient('mongodb+srv://joluas:Aburrido3000.@cluster0.n4zapwu.mongodb.net/')
+db=client['API_Mod4']
+coll=db['Sismos']
+
+#Borrado de los sismos del ultimo dia ingresado durante la ultima actualizacion
+#De esta forma nos aseguramos de tener todos los sismos desde la ultima descarga (digamos 2023-11-11)
+# añadiendo posibles sismos que hayan ocurrido despues de nuestra ultima descarga
+date='2023-11-01'
+date_format='%Y-%m-%d'
+clean_date=datetime.strptime(date,date_format)
+clean_date
+#Verificar primero con el find, una vez validado borrar con el delete_many
+#to_drop=coll.find({'Fecha':{'$gt':clean_date}})
+coll.delete_many({'Fecha':{'$gt':clean_date}})
 
 #Lectura de datos
-raw_data=pd.read_csv('C:\\Users\Jose Luis\Downloads\SSNMX_catalogo_19000101_20231111.csv', low_memory=False)
+raw_data=pd.read_csv('C:\\Users\Jose Luis\Downloads\SSNMX_catalogo_20231101_20231129.csv', low_memory=False)
 
 #Verificacion de que este funcionando
 print(raw_data.head())
@@ -33,11 +50,6 @@ clean.drop(labels=['Hora','Hora UTC'],axis=1,inplace=True)
 clean=clean.astype({'Magnitud': float})
 #Convirtiendo a diccionario para exportar a Mongo
 for_mongo=clean.to_dict('records')
-
-#Conexion a Mongo
-client=MongoClient('mongodb+srv://joluas:<PASSWORD>.@cluster0.n4zapwu.mongodb.net/')
-db=client['API_Mod4']
-coll=db['Sismos']
 
 #Insercion a Mongo
 coll.insert_many(for_mongo)
