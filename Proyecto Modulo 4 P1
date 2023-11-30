@@ -14,7 +14,7 @@ db=client['API_Mod4']
 coll=db['Sismos']
 
 #Borrado de los sismos del ultimo dia ingresado durante la ultima actualizacion
-#De esta forma nos aseguramos de tener todos los sismos desde la ultima descarga (digamos 2023-11-11)
+#De esta forma nos aseguramos de tener todos los sismos desde la ultima descarga (digamos 2023-11-01)
 # añadiendo posibles sismos que hayan ocurrido despues de nuestra ultima descarga
 date='2023-11-01'
 date_format='%Y-%m-%d'
