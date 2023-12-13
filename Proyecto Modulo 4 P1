@@ -9,7 +9,7 @@ from pymongo import MongoClient
 from datetime import datetime
 
 #Conexion a Mongo
-client=MongoClient('mongodb+srv://joluas:Aburrido3000.@cluster0.n4zapwu.mongodb.net/')
+client=MongoClient('mongodb+srv://joluas:<PASSWORD>@cluster0.n4zapwu.mongodb.net/')
 db=client['API_Mod4']
 coll=db['Sismos']
 
