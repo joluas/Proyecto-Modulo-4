@@ -10,6 +10,7 @@ db=client['API_Mod4']
 coll=db['Sismos']
 URL_DOCUMENTACION='https://github.com/joluas/Proyecto-Modulo-4/tree/main#proyecto-modulo-4'
 fun_URL='https://twitter.com/m_ebrard/status/326143274010169344?lang=es'
+URL_MORE='https://colab.research.google.com/drive/1d3xakwJTOSGiqE3d5z7sSF0uxjXl9PJw?usp=sharing'
 estados_dic={
     'Aguascalientes': 'AGS',
     'Baja California': 'BC',
@@ -109,6 +110,12 @@ def sismos_estados():
 @app.route('/sismos/fun',methods=['GET'])
 def sismos_fun():
     response=jsonify({'1.- message': 'Qué dice Marcelo?', '2.- data': fun_URL})
+    response.status_code=200
+    return response
+
+@app.route('/sismos/more',methods=['GET'])
+def sismos_more():
+    response=jsonify({'1.- message': 'Si quieres saber más, puedes seguir el siguiente link donde podras encontrar un analisis sobre la sismologia en México.', '2.- data': URL_MORE})
     response.status_code=200
     return response
 
