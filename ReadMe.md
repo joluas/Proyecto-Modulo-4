@@ -60,6 +60,11 @@ A continuación, puedes consultar todos los posibles EndPoints y parámetros que
 }
 ```
 
+### More URL
+- Request URL: `https://joluas.pythonanywhere.com/sismos/more`
+- Request methid: GET
+- Request functionality: Provee un link a un Google Colab donde se realiza un pequeño análisis de datos sobre la base de datos trabajada en esta API.
+  
 ### Fun URL
 - Request URL: `https://joluas.pythonanywhere.com/sismos/fun`
 - Request method: GET
