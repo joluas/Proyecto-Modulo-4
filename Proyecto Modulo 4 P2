@@ -122,88 +122,45 @@ def sismos_more():
 @app.route('/sismos/busqueda',methods=['GET'])
 def sismos_busqueda():
     lista=[]
+    criteria={}
+    criteria_m={}
+    criteria_d={}
+    criteria_s={}
     projection={'_id':0}
     date=request.args.get('date')
     state=request.args.get('state',type=str)
     magnitude=request.args.get('magnitude',type=float)
-    #Buscar solo por magnitud
+    #Buscar por magnitud
     if magnitude:
         valid_magnitude=magnitude_validator(magnitude)
         if valid_magnitude == True:
-            criteria=[{'Magnitud':{'$gte':magnitude}}]
+            criteria_m['Magnitud']={'$gte':magnitude}
             response=valid_response()
         if valid_magnitude == False:
             response=not_valid_magnitude()
-    #Buscar solo por fecha
+    #Buscar por fecha
     if date:
         clean_date=date_validator(date)
         if clean_date!=0:
-            criteria=[{'Fecha':{'$gt':clean_date}}]
+            criteria_d['Fecha']={'$gt':clean_date}
             response=valid_response()
         if clean_date==0:
             response=not_valid_date()
-    #Buscar solo por estado
+    #Buscar por estado
     if state:
         valid_state=state_validator(state)
         if valid_state == True:
             state_full=', '+state+'$'
-            criteria=[{'Referencia de localizacion':{'$regex':state_full}}]
+            criteria_s['Referencia de localizacion']={'$regex':state_full}
             response=valid_response()
         if valid_state == False:
             response=not_valid_state()
-    #Buscar por fecha y magnitud
-    if (date and magnitude):
-        clean_date=date_validator(date)
-        valid_magnitude=magnitude_validator(magnitude)
-        if clean_date!=0 and valid_magnitude == True:
-            criteria=[{'Magnitud':{'$gte':magnitude},'Fecha':{'$gt':clean_date}}]
-            response=valid_response()
-        if clean_date==0:
-            response=not_valid_date()
-        if valid_magnitude == False:
-            response=not_valid_magnitude()
-    #Buscar por magnitud y estado
-    if (magnitude and state):
-        valid_state=state_validator(state)
-        valid_magnitude=magnitude_validator(magnitude)
-        if valid_state == True and valid_magnitude == True:
-            state_full=', '+state+'$'
-            criteria=[{'Magnitud':{'$gte':magnitude},'Referencia de localizacion':{'$regex':state_full}}]
-            response=valid_response()
-        if valid_state == False:
-            response=not_valid_state()
-        if valid_magnitude == False:
-            response=not_valid_magnitude()
-    #Buscar por fecha y estado
-    if (date and state):
-        clean_date=date_validator(date)
-        valid_state=state_validator(state)
-        if clean_date!=0 and valid_state == True:
-            state_full=', '+state+'$'
-            criteria=[{'Fecha':{'$gt':clean_date},'Referencia de localizacion':{'$regex':state_full}}]
-            response=valid_response()
-        if clean_date==0:
-            response=not_valid_date()
-        if valid_state == False:
-            response=not_valid_state()
-    #Buscar por todo
-    if (date and magnitude and state):
-        clean_date=date_validator(date)
-        valid_state=state_validator(state)
-        valid_magnitude=magnitude_validator(magnitude)
-        if clean_date!=0 and valid_state == True and valid_magnitude == True:
-            state_full=', '+state+'$'
-            criteria=[{'Magnitud':{'$gte':magnitude},'Fecha':{'$gt':clean_date},'Referencia de localizacion':{'$regex':state_full}}]
-            response=valid_response()
-        if clean_date==0:
-            response=not_valid_date()
-        if valid_state == False:
-            response=not_valid_state()
-        if valid_magnitude == False:
-            response=not_valid_magnitude()
+    criteria.update(criteria_m)
+    criteria.update(criteria_d)
+    criteria.update(criteria_s)
     #Replica peticiones validas
     if response.status_code!=400:
-        query={'$and':criteria}
+        query={'$and':[criteria]}
         results=coll.find(query,projection)
         for result in results:
             lista.append(result)
